@@ -1,0 +1,54 @@
+/* This app's default theme tokens ("R G B" channels), so the page looks right
+   before any script runs. Owned by the app; generate from BRAND.defaultTheme
+   with jimbo-ui's scripts/tokens.mjs (or export it from a Brand page).
+   src/lib/theme.ts overrides them at runtime. */
+:root {
+  --c-bg: 7 26 31;
+  --c-bg-deep: 13 32 36;
+  --c-surface: 24 42 47;
+  --c-surface-2: 35 52 57;
+  --c-border: 67 81 85;
+  --c-text: 250 248 244;
+  --c-text-muted: 153 159 159;
+  --c-text-subtle: 121 130 131;
+  --c-accent: 61 255 197;
+  --c-accent-hover: 100 255 209;
+  --c-on-accent: 20 20 22;
+  --c-accent-lighter: 158 255 226;
+  --c-accent-light: 104 255 210;
+  --c-accent-dark: 48 199 154;
+  --c-accent-darker: 31 128 99;
+  --c-accent-top: 119 255 214;
+  --c-accent-bottom: 61 255 197;
+  --c-accent-950: 12 49 48;
+  --c-accent-900: 22 90 77;
+  --c-accent-800: 29 118 97;
+  --c-accent-700: 34 141 114;
+  --c-highlight: 255 122 89;
+  --c-highlight-hover: 255 149 122;
+  --c-on-highlight: 20 20 22;
+  --c-highlight-lighter: 255 189 172;
+  --c-highlight-light: 255 151 126;
+  --c-highlight-dark: 199 95 69;
+  --c-highlight-darker: 128 61 45;
+  --c-highlight-top: 255 162 139;
+  --c-highlight-bottom: 255 122 89;
+  --c-highlight-950: 32 36 37;
+  --c-highlight-900: 76 53 47;
+  --c-highlight-800: 106 64 54;
+  --c-highlight-700: 131 74 60;
+  --c-support: 155 176 255;
+  --c-support-hover: 175 192 255;
+  --c-on-support: 20 20 22;
+  --c-support-lighter: 205 216 255;
+  --c-support-light: 177 193 255;
+  --c-support-dark: 121 137 199;
+  --c-support-darker: 78 88 128;
+  --c-support-top: 185 200 255;
+  --c-support-bottom: 155 176 255;
+  --c-support-950: 22 41 53;
+  --c-support-900: 48 68 94;
+  --c-support-800: 66 86 121;
+  --c-support-700: 81 101 143;
+  color-scheme: dark;
+}

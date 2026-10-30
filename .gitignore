@@ -1,0 +1,9 @@
+# Secrets and machine config: copy .env.example to .env instead.
+.env
+.env.*
+!.env.example
+
+*.log
+node_modules/
+web/dist/
+.DS_Store

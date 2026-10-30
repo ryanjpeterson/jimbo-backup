@@ -1,0 +1,35 @@
+# A template for a new backup. Copy it to jobs/<number>-<name>.sh — the number
+# sets the run order, the rest is the job's id (50-paperless-internal.sh runs
+# as "paperless-internal").
+
+# What the dashboard calls it.
+JOB_NAME="Paperless"
+
+# The folder to back up, and where the copy goes, as paths on the host.
+# Both must exist. Create the backup folder once by hand; jimbo-backup never
+# creates it, so an unplugged drive can't be mistaken for an empty one.
+JOB_SOURCE="/Volumes/jimbos-sloppydrive/Paperless"
+JOB_DEST="/Volumes/internal-backup/Paperless"
+
+# Optional: 1 for a drive that isn't always plugged in. A missing backup
+# location is then "skipped" rather than "failed".
+# JOB_REMOVABLE=1
+
+# Optional: "manual" to leave this job out of the nightly run (the dashboard's
+# Back up button still works).
+# JOB_SCHEDULE=manual
+
+# Optional: rsync flags for this job only. Default: RSYNC_FLAGS in .env.
+# JOB_RSYNC_FLAGS="-rtvh --delete --no-p --no-g --no-o"
+
+# Optional: runs before the copy, e.g. to export a database into the source
+# folder. Return non-zero (and set HOOK_MESSAGE) to mark the run failed; the
+# files are still copied. SOURCE_PATH and DEST_PATH are the folders as the
+# container sees them. postgres_dump comes from scripts/hooks.sh.
+# before_sync() {
+#     PG_HOST=paperless-db PG_USER=paperless PG_DATABASE=paperless PG_PASSWORD="$PAPERLESS_DB_PASSWORD" \
+#         postgres_dump "${SOURCE_PATH}/db_dumps" paperless_db 7
+# }
+
+# Optional: runs after a successful copy.
+# after_sync() { :; }

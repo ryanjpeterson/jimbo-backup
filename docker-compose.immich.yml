@@ -1,0 +1,15 @@
+# Joins jimbo-backup to Immich's Docker network, so a job's before_sync can run
+# pg_dump against Immich's Postgres by container name. Turn it on in .env:
+#   COMPOSE_FILE=docker-compose.yml:docker-compose.immich.yml
+services:
+  jimbo-backup:
+    networks:
+      - default
+      - immich
+
+networks:
+  immich:
+    external: true
+    # Must match the network Immich's Postgres is on. Check with:
+    #   docker inspect immich_postgres --format '{{json .NetworkSettings.Networks}}'
+    name: ${IMMICH_NETWORK:-immich_default}

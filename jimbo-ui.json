@@ -1,0 +1,13 @@
+{
+  "version": "0.7.0",
+  "webRoot": "web",
+  "reference": {
+    "web/index.html": "web/index.html",
+    "web/src/components/ui/kit.tsx": "web/src/components/ui/jimbo-kit.tsx (exact copy; this app's pieces are in kit.tsx)",
+    "web/src/components/HeaderTitle.tsx": "web/src/components/HeaderTitle.tsx",
+    "web/src/lib/useBrand.ts": "web/src/lib/useBrand.ts",
+    "web/src/routes/AppShell.tsx": "web/src/routes/AppShell.tsx",
+    "web/src/routes/BrandPage.tsx": "web/src/routes/BrandPage.tsx",
+    "web/src/routes/StyleGuidePage.tsx": "web/src/routes/StyleGuidePage.tsx"
+  }
+}

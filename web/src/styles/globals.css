@@ -1,0 +1,180 @@
+/* Part of jimbo-ui (foundation — don't edit here; change jimbo-ui and update). */
+@import "./tokens.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Type: Archivo headings and Inter body by default; the theme can pick other
+     fonts and set their weight and letter spacing. */
+  :root {
+    --font-display: 'Archivo', ui-sans-serif, system-ui, sans-serif;
+    --font-body: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-display-weight: 800;
+    --font-body-weight: 400;
+    --font-display-tracking: -0.015em;
+    --font-body-tracking: 0em;
+  }
+  html, body, #root { height: 100%; }
+  body {
+    background-color: rgb(var(--c-bg));
+    /* The backdrop: an abstract pattern over a base, set by src/lib/theme.ts
+       (backdropCss) as --bg-image and friends. Before any script runs, the
+       default: three soft orbs of the brand colours. */
+    background-image: var(--bg-image,
+      radial-gradient(circle at 10% 4%, rgb(var(--c-accent) / 0.2), transparent 36%),
+      radial-gradient(circle at 98% 36%, rgb(var(--c-highlight) / 0.16), transparent 32%),
+      radial-gradient(circle at 14% 98%, rgb(var(--c-support) / 0.16), transparent 38%),
+      linear-gradient(rgb(var(--c-bg-deep) / 0), rgb(var(--c-bg-deep))));
+    background-size: var(--bg-size, 100% 100%);
+    background-position: var(--bg-position, 0 0);
+    background-repeat: var(--bg-repeat, no-repeat);
+    background-attachment: fixed;
+    /* iOS safe area support. Top/bottom insets are handled by the header and
+       the mobile bottom nav — padding body vertically on top of height: 100%
+       made the page always taller than the viewport. */
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    font-variant-numeric: tabular-nums;
+    font-weight: var(--font-body-weight);
+    letter-spacing: var(--font-body-tracking);
+    /* Prevent pull-to-refresh in PWA mode */
+    overscroll-behavior-y: contain;
+  }
+  /* Prevent iOS tap highlight */
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+  ::selection { background: rgb(var(--c-accent)); color: rgb(var(--c-on-accent)); }
+
+  /* Headings: Archivo at a heavy weight with slightly tight tracking.
+     Utilities like font-bold still override this where needed. */
+  .font-display {
+    font-weight: var(--font-display-weight);
+    letter-spacing: var(--font-display-tracking);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Type scale (the only sizes pages should need)
+     .h-page      page title            30 → 36px  Archivo 800
+     .h-section   section title         20 → 22px  Archivo 800
+     body         default               15px       Inter
+     .meta        secondary line        14px       muted
+     .eyebrow     label above a title   11px caps  subtle
+   Numbers use tabular figures so columns of counts and dates line up.
+   ───────────────────────────────────────────────────────────────────────── */
+@layer components {
+  /* The one card surface every section, list and tile sits on. */
+  /* Nearly opaque (the page's orbs only just show through), and lit by the
+     brand colours: a breath of accent from the top left
+     and of support from the bottom right, so no card is a flat slab of one hue. */
+  .card {
+    @apply rounded-2xl border border-border
+      shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06),0_12px_32px_-16px_rgba(0,0,0,0.7)];
+    background-image:
+      radial-gradient(circle at 0% 0%, rgb(var(--c-accent) / 0.09), transparent 55%),
+      radial-gradient(circle at 100% 100%, rgb(var(--c-support) / 0.09), transparent 55%),
+      linear-gradient(rgb(var(--c-surface) / 0.97), rgb(var(--c-bg-deep) / 0.97));
+  }
+  /* Lightly frosted: mostly solid surface with a soft blur and a crisp edge —
+     depth without the see-through look. */
+  .glass {
+    @apply border border-border bg-surface/90 backdrop-blur-md
+      shadow-[0_12px_30px_-18px_rgba(0,0,0,0.6)];
+  }
+  /* A card in glass: same shape as .card, frosted instead of solid. */
+  .card-glass {
+    @apply glass rounded-2xl;
+  }
+  /* Dots: a brand colour as a flat circle — one solid fill, no gradient,
+     outline, ring or shadow. The circle motif; size them with utilities
+     (guide: Circles). The old .orb-* names are the same thing. */
+  .dot-accent, .orb-accent       { @apply rounded-full bg-accent; }
+  .dot-highlight, .orb-highlight { @apply rounded-full bg-highlight; }
+  .dot-support, .orb-support     { @apply rounded-full bg-support; }
+  .eyebrow {
+    @apply text-[11px] font-semibold uppercase tracking-[0.12em] text-text-subtle;
+  }
+  .h-page {
+    @apply font-display text-[30px] leading-[1.05] text-text-base sm:text-4xl;
+  }
+  .h-section {
+    @apply font-display text-xl leading-tight text-text-base sm:text-[22px];
+  }
+  .meta {
+    @apply text-sm text-text-muted;
+  }
+  /* Form label above a field. */
+  .label {
+    @apply mb-1.5 block text-sm font-semibold text-text-muted;
+  }
+  /* Text input / select / textarea surface. */
+  .field {
+    @apply rounded-xl border border-border bg-surface-2 px-4 text-[15px] text-text-base placeholder:text-text-subtle
+      transition-colors focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20
+      disabled:opacity-50;
+  }
+  /* Buttons: pill-shaped, one height per size, three tones. */
+  .btn {
+    @apply inline-flex h-11 shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control px-5
+      text-[15px] font-semibold transition-colors
+      focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/50
+      disabled:cursor-not-allowed disabled:opacity-50 sm:h-10 sm:text-sm;
+  }
+  .btn-sm {
+    @apply h-9 px-3.5 text-sm sm:h-8;
+  }
+  /* Flat accent fill with a slight outline in the accent's darker shade. */
+  .btn-primary {
+    @apply bg-accent text-on-accent shadow-[inset_0_0_0_1px_rgb(var(--c-accent-darker)/0.55)] hover:bg-accent-hover;
+  }
+  .btn-secondary {
+    @apply border border-border bg-surface-2 text-text-base hover:border-text-subtle;
+  }
+  .btn-ghost {
+    @apply text-text-muted hover:bg-surface-2 hover:text-text-base;
+  }
+  .btn-danger {
+    @apply text-text-muted hover:bg-red-950/40 hover:text-highlight;
+  }
+  /* Small rounded tag: names, filters, counts. */
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-lg border border-border bg-surface-2 px-3 py-1.5 text-sm font-medium
+      text-text-muted;
+  }
+  /* Etched dividers between stacked items (rows in a list): a full-strength
+     border with a faint light line under it, so each row reads as its own
+     strip in dark and light themes alike. Use on the parent, like divide-y;
+     it also reaches one level down, so rows grouped in wrappers (a month's
+     label and rows in a <div>) get lines between them too. */
+  .divide-etched > :not(:first-child),
+  .divide-etched > div > :not(:first-child) {
+    border-top: 1px solid rgb(var(--c-border));
+    box-shadow: inset 0 1px 0 0 rgb(255 255 255 / 0.05);
+  }
+  /* A solid brand fill for small shapes (active tabs and pills, count badges,
+     date bands): flat colour with a slight outline in its darker shade, and
+     its on- colour for text. (Named "lit" before they went flat; kept.) */
+  .lit-accent    { @apply bg-accent text-on-accent shadow-[inset_0_0_0_1px_rgb(var(--c-accent-darker)/0.55)]; }
+  .lit-highlight { @apply bg-highlight text-on-highlight shadow-[inset_0_0_0_1px_rgb(var(--c-highlight-darker)/0.55)]; }
+  .lit-support   { @apply bg-support text-on-support shadow-[inset_0_0_0_1px_rgb(var(--c-support-darker)/0.55)]; }
+  /* Inline text action ("Edit", "Remove", "+ Add"). */
+  .link-action {
+    @apply text-sm font-semibold text-text-muted transition-colors hover:text-accent;
+  }
+}
+
+/* Pinch-zoom is allowed again, so stop iOS Safari auto-zooming into form
+   fields on focus: it does that for any input under 16px. */
+@media (max-width: 639px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+}

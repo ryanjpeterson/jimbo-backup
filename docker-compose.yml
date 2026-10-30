@@ -1,0 +1,41 @@
+services:
+  jimbo-backup:
+    build:
+      context: .
+      args:
+        PG_MAJOR: ${PG_MAJOR:-17}
+    container_name: ${CONTAINER_NAME:-jimbo-backup}
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - TZ=${TZ:-America/Toronto}
+      - HOST_VOLUMES_DIR=${HOST_VOLUMES_DIR:-/Volumes}
+    ports:
+      # Who can reach the dashboard: 0.0.0.0 = the LAN (and tailnet), 127.0.0.1 =
+      # this machine only. There is no authentication on the dashboard.
+      - "${GUI_BIND:-0.0.0.0}:${GUI_PORT:-4343}:${GUI_PORT:-4343}"
+    volumes:
+      # Every mounted volume. Job files name host paths (/Volumes/…) and reach
+      # them through here; the dashboard lists what's mounted from here too.
+      # Read-write: backups are written here, and a hook may write a database
+      # dump into a source folder.
+      - ${HOST_VOLUMES_DIR:-/Volumes}:/host-volumes:rw
+
+      # The backup jobs: one file per backup. Read fresh on every run.
+      - ./jobs:/app/jobs:ro
+
+      # Logs, state.json and theme.json. Survive rebuilds.
+      - ${LOG_DIR_HOST}:/logs
+    healthcheck:
+      # Uses the Node already in the image; no curl needed.
+      test: ["CMD", "node", "-e", "require('node:http').get({host:'127.0.0.1',port:process.env.GUI_PORT||4343,path:'/api/health'},r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
+# A job that dumps a database (like Immich's) needs to reach it on its Docker
+# network. That lives in docker-compose.immich.yml, switched on from .env with
+#   COMPOSE_FILE=docker-compose.yml:docker-compose.immich.yml
+# so this file starts on machines that don't run Immich.

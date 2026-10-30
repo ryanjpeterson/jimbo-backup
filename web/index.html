@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="description" content="Scheduled folder backups to local drives, with a dashboard and a button to run each one now." />
+    <meta name="theme-color" content="#071A1F" />
+
+    <!-- Apply the last-used theme before first paint (see src/lib/theme.ts).
+         "jimbobackup" is BRAND.storagePrefix from src/lib/brand.config.ts. -->
+    <script>
+      try {
+        var t = JSON.parse(localStorage.getItem("jimbobackup.themeVars") || "null");
+        if (t) {
+          var r = document.documentElement;
+          for (var k in t.vars) r.style.setProperty(k, t.vars[k]);
+          r.style.colorScheme = t.scheme;
+          document.querySelector('meta[name="theme-color"]').setAttribute("content", t.background);
+        }
+      } catch (e) {}
+    </script>
+
+    <!-- Installed-app feel on phones (home-screen web app). -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="jimbo.backup" />
+
+    <!-- Fonts are bundled from @fontsource (src/main.tsx) rather than Google
+         Fonts, so the dashboard works with no internet. -->
+    <title>jimbo.backup</title>
+  </head>
+  <body class="bg-bg text-text-base font-body antialiased">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

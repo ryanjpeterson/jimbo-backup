@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Recoloured at runtime: #0B0B0C → the background, #A8FF3E → the accent,
+       #FF3D6E → the highlight, #2EC5FF → the support. Replace the mark, keep the colours. -->
+  <rect width="32" height="32" rx="7" fill="#0B0B0C"/>
+  <circle cx="12" cy="13" r="7" fill="#A8FF3E"/>
+  <circle cx="21" cy="12" r="5" fill="#FF3D6E" opacity="0.92"/>
+  <circle cx="19" cy="21.5" r="5.5" fill="#2EC5FF" opacity="0.88"/>
+</svg>
