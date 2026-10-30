@@ -10,16 +10,10 @@ import { api, type Job, type LogEntry } from "@/lib/api";
 import { ago, bytes, clock, duration, parseLogName, staleMatters, STATUS } from "@/lib/backups";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
-import { Chevron, DateBlock, Sheet, STATUS_DOT, TONES } from "./jimbo-kit";
+import { Chevron, DateBlock, LIVE, Sheet, STATUS_DOT, TONES } from "./jimbo-kit";
 
 export * from "./jimbo-kit";
 
-/**
- * A running job's dot also pulses. Done uses the theme's accent, and when the
- * accent is yellow, a done dot and a running dot would be the same colour —
- * movement keeps them apart in every theme.
- */
-export const RUNNING = "animate-pulse";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Volumes
@@ -91,7 +85,7 @@ export function BackupRow({ job, now, disabledReason, busy = false, starting, er
   const body = (
     <>
       <span title={status.label} aria-label={status.label}
-        className={cn(STATUS_DOT, TONES[status.tone].dot, job.status === "running" && RUNNING)} />
+        className={cn(STATUS_DOT, TONES[status.tone].dot, job.status === "running" && LIVE)} />
       <span className="min-w-0 flex-1">
         <span className="block text-[15px] font-semibold text-text-base group-hover:text-accent sm:text-base">
           {job.name}
@@ -154,7 +148,7 @@ export function RunRow({ log, title, running, onOpen }: { log: LogEntry; title: 
           {running ? "Running now" : `Started ${clock(info ? `${info.date}T${info.time}:00` : log.mtime)}`} · {bytes(log.size)}
         </span>
       </span>
-      {running && <span title="Running" aria-label="Running" className={cn(STATUS_DOT, TONES.yellow.dot, RUNNING)} />}
+      {running && <span title="Running" aria-label="Running" className={cn(STATUS_DOT, TONES.yellow.dot, LIVE)} />}
       <Chevron className="text-text-subtle group-hover:text-accent" />
     </button>
   );
@@ -200,12 +194,22 @@ export function LogSheet({ file, title, live, onClose }: { file: string; title: 
 // Small layout piece
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** A label and a value on one line, for read-only settings. (A <p>, not a <div>: see BackupRow.) */
-export function KeyValue({ label, children }: { label: ReactNode; children: ReactNode }) {
-  return (
+/**
+ * Overrides the kit's KeyValue, with the same props. The kit's is built from
+ * <div>s, and jimbo-ui's divide-etched also rules a line between the children
+ * of any <div> row — so inside an etched list it draws a stray line between the
+ * label and the value. A <p> isn't matched. Drop this once jimbo-ui fixes it.
+ */
+export function KeyValue({ label, children, layout = "inline" }: { label: ReactNode; children: ReactNode; layout?: "inline" | "stacked" }) {
+  return layout === "inline" ? (
     <p className="flex min-h-[56px] items-center justify-between gap-4 px-4 py-3">
       <span className="text-[15px] font-semibold text-text-base">{label}</span>
       <span className="min-w-0 text-right text-sm text-text-muted">{children}</span>
+    </p>
+  ) : (
+    <p className="px-4 py-3">
+      <span className="block text-xs font-semibold text-text-subtle">{label}</span>
+      <span className="mt-0.5 block text-[15px] text-text-base">{children}</span>
     </p>
   );
 }

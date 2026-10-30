@@ -8,6 +8,8 @@ WORKDIR /web
 COPY web/package.json web/package-lock.json ./
 RUN npm ci --no-audit --no-fund
 COPY web/ ./
+# The jimbo-ui config section's About tab shows this app's jimbo-ui.json.
+COPY jimbo-ui.json /jimbo-ui.json
 RUN npm run build
 
 # --- Stage 2: the backup container -------------------------------------------

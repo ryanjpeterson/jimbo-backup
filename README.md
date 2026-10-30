@@ -64,7 +64,8 @@ jobs/30-music-external.sh    /Volumes/media/Music          →  /Volumes/externa
 - A *Back up* button per job, disabled with a reason when a volume isn't there.
 - Live log while a job runs; a Runs tab with every run's log.
 - Settings lists every job, every mounted volume (and which ones backups use),
-  and the schedule. Brand & theme picks the colours for everyone.
+  and the schedule. The jimbo-ui config section (`/jimbo-ui`) sets the look
+  for everyone.
 
 **Logs**
 - One log per job run, pruned after `LOG_RETENTION_DAYS`. `state.json` beside
@@ -291,7 +292,10 @@ a banner says which, with *Watch* for its live log.
 
 **Settings** — the schedule; every job with its paths and options (removable,
 manual only, runs a hook, or why it can't run); every mounted volume and whether
-a backup uses it; and Brand & theme and the Style guide.
+a backup uses it; and a link to the **jimbo-ui config** section (`/jimbo-ui`):
+Theme (looks in light, mid or dark, colours, fonts, backdrop), Brand, the
+Style guide, and About (the jimbo-ui version this app is on). There are no
+accounts, so anyone who can open the dashboard can change the look.
 
 "Detected" means the volume is listed in `HOST_VOLUMES_DIR`. The dashboard never
 reads *inside* a drive on a timer — that would keep macOS from ejecting it.

@@ -7,7 +7,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { describeSchedule } from "@/lib/backups";
-import { Badge, KeyValue, LinkCard, Loading, PageHeader, Section, VolumeChip } from "@/components/ui/kit";
+import { Badge, KeyValue, Loading, PageHeader, Section, VolumeChip } from "@/components/ui/kit";
+import { JimboConfigLink } from "@/routes/JimboConfigPage";
 
 export function SettingsPage() {
   const q = useQuery({ queryKey: ["status"], queryFn: api.getStatus, refetchInterval: 10_000 });
@@ -77,10 +78,7 @@ export function SettingsPage() {
         </>
       )}
 
-      <div className="space-y-3">
-        <LinkCard to="/admin/brand" eyebrow="Look" title="Brand & theme" sub="Pick the colours — everyone sees the change" accent />
-        <LinkCard to="/admin/style" eyebrow="Reference" title="Style guide" sub="Every component in the current colours" />
-      </div>
+      <JimboConfigLink canConfigure />
     </div>
   );
 }

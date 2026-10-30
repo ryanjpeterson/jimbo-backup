@@ -4,8 +4,7 @@ import { AppShell, type ShellTab } from "@/routes/AppShell";
 import { HomePage } from "@/routes/HomePage";
 import { RunsPage } from "@/routes/RunsPage";
 import { SettingsPage } from "@/routes/SettingsPage";
-import { BrandPage } from "@/routes/BrandPage";
-import { StyleGuidePage } from "@/routes/StyleGuidePage";
+import { JimboConfigPage } from "@/routes/JimboConfigPage";
 import { useApplyBrand } from "@/lib/useBrand";
 
 const queryClient = new QueryClient({
@@ -22,7 +21,7 @@ const TABS: ShellTab[] = [
   {
     to: "/settings",
     label: "Settings",
-    also: ["/admin"],
+    also: ["/jimbo-ui"],
     icon: <><path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1" /><circle cx="15" cy="6" r="2" /><circle cx="9" cy="12" r="2" /><circle cx="17" cy="18" r="2" /></>,
   },
 ];
@@ -36,8 +35,8 @@ function Shell() {
         <Route path="/" element={<HomePage />} />
         <Route path="/runs" element={<RunsPage />} />
         <Route path="/settings" element={<SettingsPage />} />
-        <Route path="/admin/brand" element={<BrandPage />} />
-        <Route path="/admin/style" element={<StyleGuidePage />} />
+        {/* No accounts in this app (jimbo-ui.json: "auth": "none"), so anyone using it can configure the look. */}
+        <Route path="/jimbo-ui" element={<JimboConfigPage canConfigure />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </AppShell>

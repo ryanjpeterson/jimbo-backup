@@ -1,11 +1,11 @@
 /**
- * Style guide — /admin/style
+ * jimbo-ui config › Style guide — /jimbo-ui?tab=style
  *
  * Every shared building block, rendered with the real code in the current
  * theme. The written rules live in the jimbo-ui guide; this page is the living
  * picture of them, so it changes whenever the kit does.
  *
- * jimbo-ui reference, plus this app's own pieces (drive chips, backup and
+ * jimbo-ui reference, plus jimbo-backup's own pieces (volume chips, backup and
  * run rows) under "This app".
  */
 
@@ -14,14 +14,22 @@ import { Button } from "@/components/ui/button";
 import { HeaderTitle } from "@/components/HeaderTitle";
 import { ColorPicker } from "@/components/ColorPicker";
 import {
-  BackupRow, Badge, DateBlock, EmptyState, EntityRow, EventRow, KeyValue, LinkCard, List, ListGroupLabel, Loading,
-  MediaCard, PageHeader, Pager, PillTabs, RankedList, RunRow, SearchField, Section, SelectField, Sheet, StatGrid, StatTile, Tabs,
-  ThemeDots, ViewSwitch, VolumeChip,
+  Autocomplete, BackupRow, Badge, DateBlock, EmptyState, EntityRow, EventRow, KeyValue, LinkCard, List, ListGroupLabel, Loading, MediaCard, PageHeader, Pager, PillTabs, RankedList, RunRow, SearchField, Section, SelectField, Sheet, StatGrid, StatTile, SwitchRow, Tabs, ThemeDots, ViewSwitch, VolumeChip, type Tone,
 } from "@/components/ui/kit";
 import type { Job } from "@/lib/api";
-import { STATUS } from "@/lib/backups";
 import { FONTS, THEME_KEYS, themeHex } from "@/lib/theme";
 import { useBrand } from "@/lib/useBrand";
+
+
+const HOUR = 3_600_000;
+const sampleJob = (over: Partial<Job>): Job => ({
+  id: "music-internal", file: "10-music-internal.sh", name: "Music", source: "/Volumes/media/Music", dest: "/Volumes/internal-backup/Music",
+  removable: false, scheduled: true, hasHook: false, error: null, status: "success", lastStart: null, lastEnd: null, lastSuccess: null,
+  durationSec: null, message: "", logFile: null, stale: false,
+  sourceVolume: { name: "media", detected: true }, destVolume: { name: "internal-backup", detected: true }, ...over,
+});
+
+const PLACES = ["Main hall", "Studio B", "Rooftop", "Riverside park", "Workshop room"];
 
 const TOKENS: { name: string; use: string }[] = [
   { name: "bg", use: "Page" },
@@ -51,16 +59,13 @@ const TOKENS: { name: string; use: string }[] = [
 const DOT = { accent: "dot-accent", highlight: "dot-highlight", support: "dot-support" } as const;
 const LIT = { accent: "lit-accent", highlight: "lit-highlight", support: "lit-support" } as const;
 
-// This app's statuses on jimbo-ui's fixed tones (purple is unused here).
-const TONE_EXAMPLES = Object.values(STATUS);
-
-const HOUR = 3_600_000;
-const sampleJob = (over: Partial<Job>): Job => ({
-  id: "music-internal", file: "10-music-internal.sh", name: "Music", source: "/Volumes/media/Music", dest: "/Volumes/internal-backup/Music",
-  removable: false, scheduled: true, hasHook: false, error: null, status: "success", lastStart: null, lastEnd: null, lastSuccess: null,
-  durationSec: null, message: "", logFile: null, stale: false,
-  sourceVolume: { name: "media", detected: true }, destVolume: { name: "internal-backup", detected: true }, ...over,
-});
+const TONE_EXAMPLES: { tone: Tone; label: string }[] = [
+  { tone: "accent", label: "Done" },
+  { tone: "yellow", label: "Going" },
+  { tone: "purple", label: "Maybe" },
+  { tone: "red", label: "Missed" },
+  { tone: "muted", label: "Cancelled" },
+];
 
 function Block({ title, note, children }: { title: string; note?: string; children: React.ReactNode }) {
   return (
@@ -74,7 +79,9 @@ function Block({ title, note, children }: { title: string; note?: string; childr
   );
 }
 
-export function StyleGuidePage() {
+export function StyleGuidePanel() {
+  const [now] = useState(() => Date.now());
+  const iso = (offset: number) => new Date(now + offset).toISOString();
   const { theme: own, colors: theme } = useBrand();
   const hex = themeHex(theme);
   const [tab, setTab] = useState<"one" | "two">("one");
@@ -85,13 +92,12 @@ export function StyleGuidePage() {
   const [sheet, setSheet] = useState(false);
   const [picked, setPicked] = useState(false);
   const [colour, setColour] = useState("#A8FF3E");
-  const [now] = useState(() => Date.now());
-  const iso = (offset: number) => new Date(now + offset).toISOString();
+  const [ac, setAc] = useState("");
+  const [on, setOn] = useState(true);
 
   return (
     <div className="space-y-10">
-      <PageHeader eyebrow="Settings · reference" title="Style guide" />
-      <p className="meta -mt-6 max-w-xl">The shared building blocks, live in the current theme. The rules are in the jimbo-ui guide.</p>
+      <p className="meta max-w-xl">The shared building blocks, live in the current theme (including a look you haven't saved yet). The rules are in the jimbo-ui guide.</p>
 
       <Block title="Brand" note="The app's name as header text (a dot takes the accent) and its colours as flat circles — two to four; a faded one is inferred.">
         <div className="card flex flex-wrap items-center gap-6 p-5">
@@ -190,7 +196,18 @@ export function StyleGuidePage() {
             options={[{ value: "newest", label: "Newest first" }, { value: "oldest", label: "Oldest first" }]} />
           <Tabs value={tab} onChange={setTab} options={[{ value: "one", label: "Tabs" }, { value: "two", label: "Segmented" }]} />
           <PillTabs value={pill} onChange={setPill} options={[{ value: "a", label: "PillTabs" }, { value: "b", label: "Filter" }, { value: "c", label: "Chips" }]} />
-          <ViewSwitch current="/admin/style" options={[{ to: "/admin/style", label: "List" }, { to: "/admin/style?view=map", label: "Map" }]} />
+          <ViewSwitch current="/jimbo-ui?tab=style" options={[{ to: "/jimbo-ui?tab=style", label: "List" }, { to: "/jimbo-ui?tab=style&view=map", label: "Map" }]} />
+          <Autocomplete label="Autocomplete" value={ac} onChange={setAc} placeholder="Type a place…"
+            options={PLACES.filter((p) => ac.trim() && p.toLowerCase().includes(ac.trim().toLowerCase())).map((p) => ({ id: p, label: p }))}
+            onPick={(o) => setAc(o.label)} onCreate={(t) => setAc(t)} />
+        </div>
+      </Block>
+
+      <Block title="Settings rows" note="KeyValue for read-only facts (inline, or stacked on detail pages); SwitchRow for on/off settings.">
+        <div className="card divide-etched overflow-hidden">
+          <KeyValue label="KeyValue">Inline — label left, value right</KeyValue>
+          <KeyValue label="Stacked" layout="stacked">A small label above the value</KeyValue>
+          <SwitchRow label="SwitchRow" hint="The whole row is the switch" checked={on} onChange={setOn} />
         </div>
       </Block>
 
@@ -202,7 +219,9 @@ export function StyleGuidePage() {
 
       <Block title="Tones" note="Fixed colours for states that carry meaning; the done state uses the accent. Apps map their own statuses onto them.">
         <div className="card flex flex-wrap gap-2 p-5">
-          {TONE_EXAMPLES.map((t) => <Badge key={t.label} tone={t.tone}>{t.label}</Badge>)}
+          {TONE_EXAMPLES.map((t) => <Badge key={t.tone} tone={t.tone}>{t.label}</Badge>)}
+          <Badge tone="accent" dot>With a dot</Badge>
+          <Badge tone="yellow" dot live>Live — pulsing</Badge>
         </div>
       </Block>
 
@@ -218,23 +237,24 @@ export function StyleGuidePage() {
       <Block title="Lists and cards" note="Lists sit in one card; rows are at least 64px tall for thumbs.">
         <List>
           <ListGroupLabel>ListGroupLabel</ListGroupLabel>
-          <EventRow to="/admin/style" date="2026-03-22" title="EventRow — a dated item" subtitle="Second line" status={{ tone: "accent", label: "Done" }} />
-          <EventRow to="/admin/style" date="2026-07-12" title="EventRow in select mode" subtitle="Tap to tick" selected={picked} onSelect={() => setPicked((p) => !p)} />
-          <EntityRow to="/admin/style" name="EntityRow — a person or place" sub="4 items" round />
+          <EventRow to="/jimbo-ui?tab=style" date="2026-03-22" title="EventRow — a dated item" subtitle="Second line" status={{ tone: "accent", label: "Done" }} />
+          <EventRow onOpen={() => setSheet(true)} date="2026-04-02" title="EventRow that opens a sheet" subtitle="onOpen; a live status pulses" status={{ tone: "yellow", label: "Running", live: true }} />
+          <EventRow to="/jimbo-ui?tab=style" date="2026-07-12" title="EventRow in select mode" subtitle="Tap to tick" selected={picked} onSelect={() => setPicked((p) => !p)} />
+          <EntityRow to="/jimbo-ui?tab=style" name="EntityRow — a person or place" sub="4 items" round />
         </List>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-          <MediaCard to="/admin/style" name="MediaCard" sub="Image card" meta="3 items" />
-          <MediaCard to="/admin/style" name="Portrait" sub="For posters" aspect="portrait" />
+          <MediaCard to="/jimbo-ui?tab=style" name="MediaCard" sub="Image card" meta="3 items" />
+          <MediaCard to="/jimbo-ui?tab=style" name="Portrait" sub="For posters" aspect="portrait" />
         </div>
-        <LinkCard to="/admin/style" eyebrow="LinkCard" title="A card that goes somewhere" sub="Eyebrow, title, sub line" accent />
+        <LinkCard to="/jimbo-ui?tab=style" eyebrow="LinkCard" title="A card that goes somewhere" sub="Eyebrow, title, sub line" accent />
         <Section title="Section" count={3}>
           <p className="p-4 text-sm text-text-muted">A titled card for a block of related content.</p>
         </Section>
         <Section title="RankedList" flush>
           <RankedList items={[
-            { id: "1", name: "Main hall", sub: "2021–2026", count: 12, href: "/admin/style" },
-            { id: "2", name: "Studio B", count: 7, href: "/admin/style" },
-            { id: "3", name: "Rooftop", count: 3, href: "/admin/style" },
+            { id: "1", name: "Main hall", sub: "2021–2026", count: 12, href: "/jimbo-ui?tab=style" },
+            { id: "2", name: "Studio B", count: 7, href: "/jimbo-ui?tab=style" },
+            { id: "3", name: "Rooftop", count: 3, href: "/jimbo-ui?tab=style" },
           ]} />
         </Section>
         <div className="card flex items-center gap-4 p-4">

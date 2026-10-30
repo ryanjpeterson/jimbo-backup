@@ -204,6 +204,8 @@ function cleanBackdrop(b) {
   if (b.base != null) { if (!['solid', 'gradient', 'glow'].includes(b.base)) return null; out.base = b.base; }
   if (b.intensity != null) { if (!num(b.intensity, 0, 1)) return null; out.intensity = b.intensity; }
   if (b.scale != null) { if (!num(b.scale, 0.5, 2)) return null; out.scale = b.scale; }
+  if (b.contrast != null) { if (!num(b.contrast, 0.3, 2)) return null; out.contrast = b.contrast; }
+  if (b.saturation != null) { if (!num(b.saturation, 0, 1.6)) return null; out.saturation = b.saturation; }
   return Object.keys(out).length ? out : undefined;
 }
 

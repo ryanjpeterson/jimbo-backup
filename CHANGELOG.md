@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-10-30 — jimbo-ui 0.8.0
+
+- Updated to jimbo-ui 0.8.0. Brand & theme and the Style guide are now one
+  **jimbo-ui config** section at `/jimbo-ui` (Theme, Brand, Style guide,
+  About), linked from Settings; the old `/admin/brand` and `/admin/style`
+  pages are gone. The Theme tab shows every look in light, mid or dark, adds a
+  Games category, and has 21 backdrops with contrast and saturation sliders,
+  which the server now saves.
+- `jimbo-ui.json` gains `"auth": "none"` and records a `KeyValue` override:
+  the kit's version draws a stray line inside etched lists, so this app keeps
+  its own until jimbo-ui fixes it.
+- Running dots use the kit's `LIVE` instead of this app's own copy of it.
+
 ## 2026-10-30 — jimbo-backup
 
 - **Renamed jimbo-backup** (header text `jimbo.backup`, container

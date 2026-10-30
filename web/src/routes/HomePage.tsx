@@ -8,7 +8,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api, type Job, type Status } from "@/lib/api";
 import { byDestination, clock, describeSchedule, jobTitle, needsLook } from "@/lib/backups";
 import { Button } from "@/components/ui/button";
-import { BackupRow, EmptyState, Loading, LogSheet, PageHeader, RUNNING, Section, STATUS_DOT, TONES, VolumeChip } from "@/components/ui/kit";
+import { BackupRow, EmptyState, Loading, LogSheet, PageHeader, LIVE, Section, STATUS_DOT, TONES, VolumeChip } from "@/components/ui/kit";
 import { cn } from "@/lib/cn";
 
 /** Why a job can't be started right now, or null. */
@@ -57,7 +57,7 @@ export function HomePage() {
 
       {s.running && (
         <div className="card-glass flex items-center gap-3 p-4">
-          <span aria-hidden="true" className={cn(STATUS_DOT, TONES.yellow.dot, RUNNING)} />
+          <span aria-hidden="true" className={cn(STATUS_DOT, TONES.yellow.dot, LIVE)} />
           <p className="min-w-0 flex-1 text-[15px]">
             <span className="font-semibold">{s.running.title}</span>
             <span className="meta block">Running since {clock(s.running.started)}</span>
