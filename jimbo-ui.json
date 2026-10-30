@@ -1,6 +1,7 @@
 {
   "version": "0.7.0",
   "webRoot": "web",
+  "auth": "none",
   "reference": {
     "web/index.html": "web/index.html",
     "web/src/components/ui/kit.tsx": "web/src/components/ui/jimbo-kit.tsx (exact copy; this app's pieces are in kit.tsx)",
@@ -9,5 +10,99 @@
     "web/src/routes/AppShell.tsx": "web/src/routes/AppShell.tsx",
     "web/src/routes/BrandPage.tsx": "web/src/routes/BrandPage.tsx",
     "web/src/routes/StyleGuidePage.tsx": "web/src/routes/StyleGuidePage.tsx"
+  },
+  "registry": {
+    "registered": "2026-10-30",
+    "audited": "2026-10-30"
+  },
+  "components": {
+    "uses": [
+      "button",
+      "color-picker",
+      "card",
+      "field",
+      "label",
+      "chip",
+      "dot",
+      "app-shell",
+      "top-bar-button",
+      "dock-icon",
+      "header-title",
+      "theme-card",
+      "badge",
+      "tones",
+      "status-dot",
+      "chevron",
+      "page-header",
+      "section",
+      "list",
+      "list-group-label",
+      "date-block",
+      "event-row",
+      "link-card",
+      "range-field",
+      "select-field",
+      "sheet",
+      "loading",
+      "empty-state",
+      "save-bar"
+    ],
+    "local": [
+      {
+        "name": "RunRow",
+        "path": "web/src/components/ui/kit.tsx",
+        "kind": "candidate",
+        "matches": "event-row"
+      },
+      {
+        "name": "VolumeChip",
+        "path": "web/src/components/ui/kit.tsx",
+        "kind": "candidate",
+        "matches": "badge"
+      },
+      {
+        "name": "RUNNING (pulsing status dot)",
+        "path": "web/src/components/ui/kit.tsx",
+        "kind": "candidate",
+        "matches": "status-dot"
+      },
+      {
+        "name": "KeyValue",
+        "path": "web/src/components/ui/kit.tsx",
+        "kind": "candidate",
+        "matches": "key-value"
+      },
+      {
+        "name": "Verdict",
+        "path": "web/src/routes/HomePage.tsx",
+        "kind": "candidate",
+        "matches": "verdict"
+      },
+      {
+        "name": "LogSheet (log as monospace text)",
+        "path": "web/src/components/ui/kit.tsx",
+        "kind": "domain",
+        "matches": "sheet"
+      },
+      {
+        "name": "BackupRow",
+        "path": "web/src/components/ui/kit.tsx",
+        "kind": "domain",
+        "matches": null
+      },
+      {
+        "name": "BrandPage",
+        "path": "web/src/routes/BrandPage.tsx",
+        "kind": "candidate",
+        "matches": "jimbo-config"
+      },
+      {
+        "name": "StyleGuidePage",
+        "path": "web/src/routes/StyleGuidePage.tsx",
+        "kind": "candidate",
+        "matches": "jimbo-config"
+      }
+    ],
+    "overrides": []
   }
 }
