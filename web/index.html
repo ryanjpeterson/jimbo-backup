@@ -25,7 +25,9 @@
     <!-- Installed-app feel on phones (home-screen web app). -->
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <!-- A solid status bar in the theme-color. Not black-translucent: since
+         iOS 26.1 that adds a system blur over the top of the page. -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="jimbo.backup" />
 
     <!-- Fonts are bundled from @fontsource (src/main.tsx) rather than Google

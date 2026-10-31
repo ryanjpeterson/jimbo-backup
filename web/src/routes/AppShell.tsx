@@ -42,8 +42,8 @@ export function AppShell({ tabs, actions, onRefresh, width = "column", children 
 
   return (
     <div className="min-h-[100dvh] overflow-x-clip">
-      {/* The bar runs up under the status bar (frosted there too) and its content starts below it,
-          so the status bar never sits over the app's name or buttons. */}
+      {/* Top padding is --safe-top: 0 under the installed app's solid status bar, the notch
+          wherever the page is drawn under it, so nothing sits under the status bar. */}
       <header className="sticky top-0 z-40 border-b border-border bg-bg/90 pt-[var(--safe-top)] backdrop-blur-md">
         <div className={cn("mx-auto flex h-14 items-center justify-between gap-4 px-4 sm:h-16 sm:px-6", WIDTHS[width])}>
           <div className="flex h-full items-center gap-8">

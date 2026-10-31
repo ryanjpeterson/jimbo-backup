@@ -1,10 +1,9 @@
 /**
- * The phone frame: makes sure the page is laid out edge to edge under the
- * status bar and home indicator, so the safe-area insets (--safe-top and
- * friends in globals.css) are real numbers and the top bar can clear the
- * status bar. Without viewport-fit=cover, an installed app with a
- * translucent status bar draws under the status bar while the insets read 0,
- * which puts the header text under the status bar's blur.
+ * The phone frame: makes sure the page is laid out edge to edge, so the
+ * safe-area insets (--safe-top and friends in globals.css) are real numbers
+ * and the dock and bars clear the home indicator and any notch. Without
+ * viewport-fit=cover the insets read 0 even where the page is drawn under
+ * them.
  *
  * index.html should already say it (reference/web/index.html); this repairs
  * an app that doesn't, and warns in development. Called by applyTheme, so

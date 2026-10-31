@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-10-31 — jimbo-ui 0.8.2
+
+- Updated to jimbo-ui 0.8.2: a solid status bar in the theme's background
+  instead of a translucent one, so iOS's blur at the top of the screen no
+  longer covers the app's name. Remove the app from the Home Screen and add
+  it again to see it.
+
 ## 2026-10-31 — jimbo-ui 0.8.1
 
 - Updated to jimbo-ui 0.8.1: full screen on phones. The backdrop is a fixed
