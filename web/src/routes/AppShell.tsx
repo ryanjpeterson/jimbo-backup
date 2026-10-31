@@ -41,9 +41,10 @@ export function AppShell({ tabs, actions, onRefresh, width = "column", children 
     [t.to, ...(t.also ?? [])].some((p) => (p === "/" ? location.pathname === "/" : location.pathname.startsWith(p)));
 
   return (
-    <div className="min-h-full overflow-x-clip">
-      {/* Top padding clears the status bar / notch in standalone mode. */}
-      <header className="sticky top-0 z-40 border-b border-border bg-bg/90 pt-[env(safe-area-inset-top)] backdrop-blur-md">
+    <div className="min-h-[100dvh] overflow-x-clip">
+      {/* The bar runs up under the status bar (frosted there too) and its content starts below it,
+          so the status bar never sits over the app's name or buttons. */}
+      <header className="sticky top-0 z-40 border-b border-border bg-bg/90 pt-[var(--safe-top)] backdrop-blur-md">
         <div className={cn("mx-auto flex h-14 items-center justify-between gap-4 px-4 sm:h-16 sm:px-6", WIDTHS[width])}>
           <div className="flex h-full items-center gap-8">
             <Link to="/" aria-label="Home"><HeaderTitle /></Link>
@@ -67,7 +68,7 @@ export function AppShell({ tabs, actions, onRefresh, width = "column", children 
       {/* Pull-to-refresh indicator, sliding down from under the top bar. */}
       {onRefresh && (pull > 0 || refreshing) && (
         <div aria-hidden className="pointer-events-none fixed inset-x-0 z-30 flex justify-center"
-          style={{ top: `calc(3.5rem + env(safe-area-inset-top) + ${Math.round(Math.min(pull, 1) * 56)}px - 40px)` }}>
+          style={{ top: `calc(var(--top-bar) + ${Math.round(Math.min(pull, 1) * 56)}px - 40px)` }}>
           <div className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-surface shadow-xl" style={{ opacity: Math.min(pull, 1) }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"
               className={refreshing ? "animate-spin text-accent" : pull >= 1 ? "text-accent" : "text-text-muted"}
@@ -78,11 +79,11 @@ export function AppShell({ tabs, actions, onRefresh, width = "column", children 
         </div>
       )}
 
-      <main className={cn("mx-auto px-4 pt-6 pb-[calc(6.5rem+env(safe-area-inset-bottom))] sm:px-6 sm:py-8", WIDTHS[width])}>{children}</main>
+      <main className={cn("mx-auto px-4 pt-6 pb-[var(--dock-space)] sm:px-6 sm:pt-8", WIDTHS[width])}>{children}</main>
 
       {/* Phones: a floating, frosted dock above the home indicator; content fades out behind it. */}
-      <div aria-hidden className="pointer-events-none fixed inset-x-0 bottom-0 z-30 h-[calc(6rem+env(safe-area-inset-bottom))] bg-gradient-to-t from-bg via-bg/70 to-transparent sm:hidden" />
-      <nav aria-label="Main" className="pointer-events-none fixed inset-x-0 bottom-0 z-40 select-none px-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] sm:hidden">
+      <div aria-hidden className="pointer-events-none fixed inset-x-0 bottom-0 z-30 h-[calc(6rem+var(--safe-bottom))] bg-gradient-to-t from-bg via-bg/70 to-transparent sm:hidden" />
+      <nav aria-label="Main" className="pointer-events-none fixed inset-x-0 bottom-0 z-40 select-none pb-[calc(0.75rem+var(--safe-bottom))] pl-[calc(0.75rem+var(--safe-left))] pr-[calc(0.75rem+var(--safe-right))] sm:hidden">
         <div className="pointer-events-auto mx-auto grid max-w-md gap-1 rounded-[20px] border border-border bg-surface/95 p-1.5 shadow-[0_10px_40px_-8px_rgba(0,0,0,0.75)] ring-1 ring-black/30 backdrop-blur-md"
           style={{ gridTemplateColumns: `repeat(${tabs.length}, minmax(0, 1fr))` }}>
           {tabs.map((t) => {

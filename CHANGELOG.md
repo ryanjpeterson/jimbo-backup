@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-10-31 — jimbo-ui 0.8.1
+
+- Updated to jimbo-ui 0.8.1: full screen on phones. The backdrop is a fixed
+  layer the height of the screen and the page is at least the screen's
+  height, so it no longer stops short of the bottom; the shell, sheets, the
+  image viewer and the theme save bar use the safe-area variables
+  (`--safe-top` and friends) instead of `env()`.
+
 ## 2026-10-30 — jimbo-ui 0.8.0
 
 - Updated to jimbo-ui 0.8.0. Brand & theme and the Style guide are now one
