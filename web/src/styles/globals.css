@@ -37,15 +37,13 @@
   /* The page colour sits on html too, so any part of the screen the page
      doesn't reach (overscroll, a short standalone viewport) is the theme's
      background, never white or black. */
-  html {
-    height: 100%;
-    background-color: rgb(var(--c-bg));
-  }
-  body, #root { min-height: 100%; }
+  html { background-color: rgb(var(--c-bg)); }
+  /* A set height, so pages can fill it with h-full / min-h-full. */
+  html, body, #root { height: 100%; }
   /* Full height on phones: dvh where supported, so the page fills the
      screen in a browser tab and as an installed app alike. */
   @supports (min-height: 100dvh) {
-    body, #root { min-height: 100dvh; }
+    #root { min-height: 100dvh; }
   }
   body {
     background-color: rgb(var(--c-bg));

@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-31 — jimbo-ui 0.8.3
+
+- Updated to jimbo-ui 0.8.3: a fix to the page's height; nothing changes on
+  screen here.
+
 ## 2026-10-31 — jimbo-ui 0.8.2
 
 - Updated to jimbo-ui 0.8.2: a solid status bar in the theme's background
